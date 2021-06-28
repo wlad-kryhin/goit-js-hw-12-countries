@@ -5,6 +5,11 @@ import articlesOneCountry from '../template/oneCountry.hbs';
 import countryList from '../template/manyCountry.hbs';
 import debounce from 'lodash.debounce';
 import { alert, defaultModules } from '../../node_modules/@pnotify/core/dist/PNotify.js';
+import * as PNotifyMobile from '../../node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
+
+  defaultModules.set(PNotifyMobile, {});
+  
+
 
  const searchForm = document.querySelector('.input-js');
  const articles  = document.querySelector('.js-articles');
@@ -17,25 +22,24 @@ function countrySearchInputHandler(e) {
   clearArticlesContainer();
    const searchQuery = e.target.value;
   
-  
   countrySearch.fetchArticles(searchQuery).then(data => {
     
       if (data.length > 10) {
-          alert('Too many matches found. Please enter a more specific query!')
+          alert({text : 'Too many matches found. Please enter a more specific query!'})
       }
        else if (data.status === 404) {
     alert('No country has been found. Please enter a more specific query!');
       } 
       else if (data.length === 1) {
+        alert('SUCCESS YEEEEEEEEEAHH')
           buildListMarkup(data, articlesOneCountry);
       }
        else if (data.length <= 10) {
           buildListMarkup(data, countryList);
       }
   })
-  .catch(
-alert('No country has been found. Please enter a more specific query!')
-  )}
+}
+
 function buildListMarkup(countries, template) {
   const markup = countries.map(count => template(count)).join();
   articles.insertAdjacentHTML('afterbegin', markup)

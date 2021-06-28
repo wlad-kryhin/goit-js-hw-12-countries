@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "handlebars": "^4.7.7",
-    "lodash.debounce": "^4.0.8"
+    "lodash.debounce": "^4.0.8",
+    "material-design-icon-fonts": "^3.0.1"
   }
 }
