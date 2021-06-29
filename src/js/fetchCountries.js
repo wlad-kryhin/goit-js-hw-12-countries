@@ -4,11 +4,21 @@ import countrySearch from './country-url';
 import articlesOneCountry from '../template/oneCountry.hbs';
 import countryList from '../template/manyCountry.hbs';
 import debounce from 'lodash.debounce';
-import { alert, defaultModules } from '../../node_modules/@pnotify/core/dist/PNotify.js';
+import { info, success, error } from '../../node_modules/@pnotify/core';
+import { defaultModules } from '../../node_modules/@pnotify/core/dist/PNotify.js';
 import * as PNotifyMobile from '../../node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
 
   defaultModules.set(PNotifyMobile, {});
+  const myError = error({
+    text: "No country has been found. Please enter a more specific query!"
+  });
   
+  const myInfo = info({
+    text: "Too many matches found. Please enter a more specific query!"
+  });
+  const mySuccess = success({
+    text: "It's OK."
+  });
 
 
  const searchForm = document.querySelector('.input-js');
@@ -25,20 +35,33 @@ function countrySearchInputHandler(e) {
   countrySearch.fetchArticles(searchQuery).then(data => {
     
       if (data.length > 10) {
-          alert({text : 'Too many matches found. Please enter a more specific query!'})
+        // handlerSpecificQuery()
+        myInfo
       }
        else if (data.status === 404) {
-    alert('No country has been found. Please enter a more specific query!');
-      } 
+        //  handlerError()
+        myError
+       }
       else if (data.length === 1) {
-        alert('SUCCESS YEEEEEEEEEAHH')
+        // handlerSuccess()
+         mySuccess        
           buildListMarkup(data, articlesOneCountry);
       }
        else if (data.length <= 10) {
+         myInfo
           buildListMarkup(data, countryList);
       }
   })
 }
+// function handlerError(){
+//   alert({text : 'No country has been found. Please enter a more specific query!' })
+// }
+// function handlerSpecificQuery(){
+//   alert({text : 'Too many matches found. Please enter a more specific query!'})
+// }
+// function handlerSuccess(){
+//   alert({text : 'SUCCESS YEEEEEEEEEAHH'})
+// }
 
 function buildListMarkup(countries, template) {
   const markup = countries.map(count => template(count)).join();
