@@ -9,16 +9,7 @@ import { defaultModules } from '../../node_modules/@pnotify/core/dist/PNotify.js
 import * as PNotifyMobile from '../../node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
 
   defaultModules.set(PNotifyMobile, {});
-  const myError = error({
-    text: "No country has been found. Please enter a more specific query!"
-  });
-  
-  const myInfo = info({
-    text: "Too many matches found. Please enter a more specific query!"
-  });
-  const mySuccess = success({
-    text: "It's OK."
-  });
+
 
 
  const searchForm = document.querySelector('.input-js');
@@ -36,19 +27,28 @@ function countrySearchInputHandler(e) {
     
       if (data.length > 10) {
         // handlerSpecificQuery()
-        myInfo
+        info({
+          text: "Too many matches found. Please enter a more specific query!"
+        });
       }
        else if (data.status === 404) {
         //  handlerError()
-        myError
+        error({
+          text: "No country has been found. Please enter a more specific query!"
+        });
+        
        }
       else if (data.length === 1) {
         // handlerSuccess()
-         mySuccess        
+        success({
+          text: "It's OK."
+        });       
           buildListMarkup(data, articlesOneCountry);
       }
        else if (data.length <= 10) {
-         myInfo
+        info({
+          text: "Too many matches found. Please enter a more specific query!"
+        });
           buildListMarkup(data, countryList);
       }
   })
