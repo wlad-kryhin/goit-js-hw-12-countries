@@ -28,20 +28,23 @@ function countrySearchInputHandler(e) {
       if (data.length > 10) {
         // handlerSpecificQuery()
         info({
-          text: "Too many matches found. Please enter a more specific query!"
+          text: "Too many matches found. Please enter a more specific query!",
+          delay: 500
         });
       }
-       else if (data.status === 404) {
+       else if (data.status === 404 & data === '') {
         //  handlerError()
         error({
-          text: "No country has been found. Please enter a more specific query!"
+          text: "No country has been found. Please enter a more specific query!",
+          delay: 500
         });
         
        }
       else if (data.length === 1) {
         // handlerSuccess()
         success({
-          text: "It's OK."
+          text: "It's OK.",
+          delay: 500
         });       
           buildListMarkup(data, articlesOneCountry);
       }
